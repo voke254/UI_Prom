@@ -19,6 +19,37 @@ UI.prototype.addNodeToList = function(node){
   `;
   list.appendChild(row);
 }
+//Show Alerts
+UI.prototype.showAlert = function(message, className) {
+    //Create div
+    const div = document.createElement
+    ('div');
+    //Add classes
+    div.className = `alert ${className}`;
+    //Add Text
+    div.appendChild(document.createTextNode(message));
+    //Get parent
+    const container =
+    document.querySelector('.container');
+    // Get Form
+    const form = document.querySelector
+    ('#node-form');
+    //Insert alert
+    container.insertBefore(div, form);
+
+    //Timeout
+    setTimeout(function(){
+        document.querySelector('.alert')
+        .remove();
+    }, 3000);
+}
+
+//Delete Book
+UI.prototype.deleteBook = function(target){
+    if(target.className === 'delete'){
+        target.parentElement.parentElement.remove();
+    }
+}
 
 // Clear Fields
 UI.prototype.clearFields = function(){
@@ -39,13 +70,40 @@ function(e){
     //Instantiate UI
     const ui = new UI();
     
-    //Add Node to list
-    ui.addNodeToList(node);
+    // Validation
+    if(title ==='' || target === '' ) {
+        //Error Alert
+        ui.showAlert('Please fill in all fields', 'error');
+    } else {
 
-    // Clear fields
-    ui.clearFields();
+        //Add Node to list
+        ui.addNodeToList(node);
+
+        //Show success
+        ui.showAlert('Book Added', 'success');
+
+        // Clear fields
+        ui.clearFields();
+
+    }
 
     e.preventDefault();
 });
 
+ // Event Listener for Delete
+
+ document.getElementById('node-list').addEventListener
+ ('click', function(e){
+
+     //Instatiate UI
+     const ui = new UI();
+
+     //Delete Book
+     ui.deleteBook(e.target);
+
+    //Show Message
+     ui.showAlert('Book Removed', 'success')
+     
+    e.preventDefault();
+ });
 
